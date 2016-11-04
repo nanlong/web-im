@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       self: null,
     },
     main: {
-      is_mini: false,
+      is_mini: true,
       firends: [],
     },
     dialog: {

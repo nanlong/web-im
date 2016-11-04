@@ -79,6 +79,7 @@ export default {
     font-size: 14px;
     line-height: 1.5;
     color: #333;
+    z-index: 1000000;
   }
   #zheye-web-chat-app div, ul, li, h1, h2, h3, h4, h5, h6 {
     margin: 0;
