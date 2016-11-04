@@ -14,7 +14,7 @@ defmodule Zheye.DialogChannel do
     |> WebChatDialog.changeset(payload)
     |> Repo.insert
 
-    user = WebChatUser |> Repo.get_by(origin_id: dialog.from_id)
+    user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
 
     dialog_data = %{
       from_id: dialog.from_id,
