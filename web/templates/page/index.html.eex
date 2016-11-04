@@ -4,7 +4,9 @@
     user-avatar="https://avatars.githubusercontent.com/u/19494388?v=3&s=200"
     user-bio="小强打不死">
   </chat-button>
-    
+</span>
+
+<span class="zheye-web-chat-button">
   <chat-button user-id="100000123"
     user-name="者也"
     user-avatar="https://oalksmbwn.qnssl.com/8e05b0b3f276e7d3c32696e237d59146.jpeg?imageView2/1/w/200/h/200"

@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       self: null,
     },
     main: {
-      is_mini: true,
+      is_mini: false,
       firends: [],
     },
     dialog: {
@@ -98,12 +98,15 @@ new Vue({
 
 const buttons = document.querySelectorAll('.zheye-web-chat-button')
 
-if (buttons.length > 0) {
+buttons.forEach(function(el, index) {
+  let ele_id = `zheye-web-chat-button-${index}`
+  el.setAttribute("id", ele_id)
+
   new Vue({
-    el: ".zheye-web-chat-button",
+    el: `#${ele_id}`,
     store,
     components: {
       ChatButton
     }
   })
-}
+})
