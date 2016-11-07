@@ -17,6 +17,7 @@ defmodule Zheye.DialogChannel do
     user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
 
     dialog_data = %{
+      id: dialog.id,
       from_id: dialog.from_id,
       to_id: dialog.to_id,
       content: dialog.content,
@@ -51,6 +52,7 @@ defmodule Zheye.DialogChannel do
 
     list_data = Enum.map(list, fn item ->
       %{
+        id: item.id,
         from_id: item.from_id,
         to_id: item.to_id,
         content: item.content,

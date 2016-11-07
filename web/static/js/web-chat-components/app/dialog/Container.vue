@@ -40,6 +40,10 @@ export default {
   },
   watch: {
     dialog_current_user: function(user, old_user) {
+      if (old_user && old_user.id === user.id) {
+        return
+      }
+
       let channel = this.$store.state.channel.dialog
 
       this.users[user.id] = user

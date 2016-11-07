@@ -35,6 +35,9 @@ export default {
   },
   watch: {
     toggle_current_user: function(user, old_user) {
+      if (old_user && old_user.id === user.id) {
+        return
+      }
       this.clear()
     }
   },

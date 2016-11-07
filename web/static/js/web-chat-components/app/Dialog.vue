@@ -40,6 +40,10 @@ export default {
   },
   watch: {
     dialog_current_user: function(user, old_user) {
+      if (old_user && old_user.id === user.id) {
+        return
+      }
+
       let socket = this.$store.state.socket
       let topic = [this.chat_current_user.id, user.id].sort().join("&")
       let channel = socket.channel(`dialog:${topic}@${this.chat_current_user.domain}`, {})
