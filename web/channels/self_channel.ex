@@ -22,6 +22,7 @@ defmodule Zheye.SelfChannel do
     |> Enum.filter(fn (x) -> x != socket.assigns.user.origin_id end)
 
     firends_user = WebChatUser
+    |> where([u], u.origin_domain == ^socket.assigns.domain)
     |> where([u], u.origin_id in ^firends_id)
     |> Repo.all
 
