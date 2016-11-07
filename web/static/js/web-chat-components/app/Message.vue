@@ -41,6 +41,7 @@ export default {
     width: 170px;
     margin-left: -86px !important;
     cursor: pointer;
+    background: #fff;
   }
   .chat-message-left {
     float: left;
