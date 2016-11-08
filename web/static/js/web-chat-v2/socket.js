@@ -1,9 +1,10 @@
 import {Socket, Presence} from "phoenix"
+import Tool from "./tool"
 
-let socket_url = document.domain == "localhost" ? "/socket" : "wss://www.zheye.im/socket"
+let socket_url = Tool.is_dev() ? "/socket" : "wss://www.zheye.im/socket"
 
 let socket = new Socket(socket_url, {params: {
-  domain: document.domain == "localhost" ? "www.zheye.im" : document.domain,
+  domain: Tool.get_domain(),
   webchat_config: zheye.config.webchat,
 }})
 

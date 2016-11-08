@@ -1,15 +1,23 @@
 import Vue from "vue"
 import Vuex from "vuex"
 import socket from "./socket"
+import Tool from "./tool"
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     socket: socket,
+    domain: Tool.get_domain(),
     current_user: zheye.config.webchat,
+    channel: {
+      room: null,
+      self: null,
+      dialog: null
+    },
     main: {
       is_show: true,
+      firends: [],
     },
     mini: {
       is_show: false,
@@ -23,6 +31,18 @@ const store = new Vuex.Store({
     open_main (state) {
       state.main.is_show = true
       state.mini.is_show = false
+    },
+    set_channel_room (state, channel) {
+      state.channel.room = channel
+    },
+    set_channel_self (state, channel) {
+      state.channel.self = channel
+    },
+    set_channel_dialog (state, channel) {
+      state.channel.dialog = channel
+    },
+    set_main_firends (state, firends) {
+      state.main.firends = firends
     }
   }
 })

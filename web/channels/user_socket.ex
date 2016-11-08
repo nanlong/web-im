@@ -25,7 +25,6 @@ defmodule Zheye.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
   def connect(%{"domain" => domain, "webchat_config" => user_data}, socket) do
-    domain = domain |> String.split(".") |> Enum.slice(-2, 2) |> Enum.join(".")
     params = user_data |> Map.put_new("origin_domain", domain)
 
     {:ok, user} = params |> WebChatUser.get
