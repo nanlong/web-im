@@ -1,7 +1,7 @@
 defmodule Zheye.SelfChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{WebChatUser, WebChatFirendRequest, WebChatFirend}
+  alias Zheye.{WebChatUser, WebChatFriendRequest, WebChatFriend}
 
   import Zheye.Ecto.Helpers
 
@@ -11,7 +11,7 @@ defmodule Zheye.SelfChannel do
   end
 
   def handle_info(:after_join, socket) do
-    firends = WebChatFirend
+    firends = WebChatFriend
     |> where([f], f.domain == ^socket.assigns.domain)
     |> where([f], f.left_user_id == ^socket.assigns.user.origin_id or f.right_user_id == ^socket.assigns.user.origin_id)
     |> Repo.all
@@ -35,19 +35,19 @@ defmodule Zheye.SelfChannel do
       }
     end)
 
-    push socket, "load_firends", %{data: firends_user_data}
+    push socket, "load_friends", %{data: firends_user_data}
 
     {:noreply, socket}
   end
 
-  def handle_in("add_firend", payload, socket) do
+  def handle_in("add_friend", payload, socket) do
     params = %{
       domain: socket.assigns.domain,
       from_user_id: socket.assigns.user.origin_id,
       to_user_id: Map.get(payload, "id")
     }
 
-    {:ok, request} = WebChatFirendRequest.create(params)
+    {:ok, request} = WebChatFriendRequest.create(params)
 
     user = socket.assigns.user
     topic = "self:" <> Map.get(payload, "id") <> "@" <> socket.assigns.domain
@@ -62,13 +62,13 @@ defmodule Zheye.SelfChannel do
         }
       }, params)
 
-    socket.endpoint.broadcast topic, "notification:firend", data
+    socket.endpoint.broadcast topic, "notification:friend", data
 
     {:noreply, socket}
   end
 
-  def handle_in("add_firend:confirmed", payload, socket) do
-    request = WebChatFirendRequest
+  def handle_in("add_friend:confirmed", payload, socket) do
+    request = WebChatFriendRequest
     |> Repo.get(Map.get(payload, "id"))
     |> update_field(:is_confirmed, true)
 
@@ -80,8 +80,8 @@ defmodule Zheye.SelfChannel do
       right_user_id: right_user_id
     }
 
-    %WebChatFirend{}
-    |> WebChatFirend.changeset(params)
+    %WebChatFriend{}
+    |> WebChatFriend.changeset(params)
     |> Repo.insert
 
     {:noreply, socket}

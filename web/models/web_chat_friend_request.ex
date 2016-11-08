@@ -1,9 +1,9 @@
-defmodule Zheye.WebChatFirendRequest do
+defmodule Zheye.WebChatFriendRequest do
   use Zheye.Web, :model
 
   alias Zheye.{Repo}
 
-  schema "web_chat_firend_requests" do
+  schema "web_chat_friend_requests" do
     field :domain, :string
     field :from_user_id, :string
     field :to_user_id, :string

@@ -17,7 +17,8 @@ const store = new Vuex.Store({
     },
     main: {
       is_show: true,
-      firends: [],
+      friends: [],
+      friend_selected_id: null,
     },
     mini: {
       is_show: false,
@@ -41,8 +42,11 @@ const store = new Vuex.Store({
     set_channel_dialog (state, channel) {
       state.channel.dialog = channel
     },
-    set_main_firends (state, firends) {
-      state.main.firends = firends
+    set_main_friends (state, friends) {
+      state.main.friends = friends
+    },
+    set_main_friend_selected_id (state, user_id) {
+      state.main.friend_selected_id = user_id
     }
   }
 })

@@ -1,12 +1,20 @@
 <template lang="html">
   <div class="zheye-app-main-left">
-
+    <MainFriend v-for="user in friends" :key="user.id" :user="user"></MainFriend>
   </div>
 </template>
 
 <script>
+import MainFriend from "./Friend.vue"
+
 export default {
-  name: "MainLeft"
+  name: "MainLeft",
+  components: {MainFriend,},
+  computed: {
+    friends () {
+      return this.$store.state.main.friends
+    }
+  }
 }
 </script>
 

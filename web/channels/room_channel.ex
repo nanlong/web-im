@@ -1,7 +1,7 @@
 defmodule Zheye.RoomChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{WebChatUser, WebChatFirend, Presence}
+  alias Zheye.{WebChatUser, WebChatFriend, Presence}
 
   def join("room:lobby", _, socket) do
     send(self, :after_join)
@@ -57,7 +57,7 @@ defmodule Zheye.RoomChannel do
       avatar: user.avatar,
       bio: user.bio,
       is_online: Map.get(user_params, "is_online"),
-      is_firend: WebChatFirend.is_firend?(socket.assigns.domain, socket.assigns.user, user)
+      is_firend: WebChatFriend.is_firend?(socket.assigns.domain, socket.assigns.user, user)
     }
 
     push socket, "load_user", %{data: user_data}

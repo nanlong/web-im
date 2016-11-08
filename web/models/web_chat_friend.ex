@@ -1,9 +1,9 @@
-defmodule Zheye.WebChatFirend do
+defmodule Zheye.WebChatFriend do
   use Zheye.Web, :model
 
   alias Zheye.{Repo}
 
-  schema "web_chat_firends" do
+  schema "web_chat_friends" do
     field :domain, :string
     field :left_user_id, :string
     field :right_user_id, :string
