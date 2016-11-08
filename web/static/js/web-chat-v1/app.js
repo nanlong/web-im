@@ -1,8 +1,8 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import date from "./date"
-import App from "./web-chat-components/App.vue"
-import ChatButton from "./web-chat-components/Button.vue"
+import date from "./filters/date"
+import App from "./components/App.vue"
+import ChatButton from "./components/Button.vue"
 import socket from "./socket"
 
 Vue.use(Vuex)
