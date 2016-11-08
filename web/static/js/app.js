@@ -20,4 +20,4 @@
 
 // import socket from "./socket"
 
-import "./web-chat"
+import "./web-chat-v1/app"

@@ -3,7 +3,7 @@ import Vuex from "vuex"
 import date from "./date"
 import App from "./web-chat-components/App.vue"
 import ChatButton from "./web-chat-components/Button.vue"
-import socket from "./web-chat-socket"
+import socket from "./socket"
 
 Vue.use(Vuex)
 Vue.filter("date", date)
@@ -14,6 +14,7 @@ room_channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
 
+// 共享数据
 const store = new Vuex.Store({
   state: {
     current_user: zheye.config.webchat,
@@ -90,20 +91,17 @@ const store = new Vuex.Store({
   }
 })
 
+// 初始化app
 new Vue({
   el: "#zheye-web-chat",
   store,
   render: h => h(App)
 })
 
-const buttons = document.querySelectorAll('.zheye-web-chat-button')
-
-buttons.forEach(function(el, index) {
-  let ele_id = `zheye-web-chat-button-${index}`
-  el.setAttribute("id", ele_id)
-
+// 初始化button
+document.querySelectorAll('.zheye-web-chat-button').forEach(function(element) {
   new Vue({
-    el: `#${ele_id}`,
+    el: element,
     store,
     components: {
       ChatButton
