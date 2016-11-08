@@ -20,4 +20,5 @@
 
 // import socket from "./socket"
 
-import "./web-chat-v1/app"
+// import "./web-chat-v1/app"
+import "./web-chat-v2/app"
