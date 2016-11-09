@@ -7,7 +7,7 @@
       <span>聊天记录</span>
     </div>
     <div class="zheye-app-dialog-user-footer-textarea">
-      <textarea name="content"></textarea>
+      <textarea name="content" v-model="content" @keyup.13="send"></textarea>
     </div>
 
   </div>
@@ -15,7 +15,36 @@
 
 <script>
 export default {
-  name: "DialogUserFooter"
+  name: "DialogUserFooter",
+  data: () => {
+    return {
+      content: ""
+    }
+  },
+  computed: {
+    channel () {
+      return this.$store.state.channel.dialog
+    },
+    current_user () {
+      return this.$store.state.current_user
+    },
+    selected () {
+      return this.$store.state.main.dialog.left.selected
+    }
+  },
+  methods: {
+    send: function() {
+      this.channel.push("shout", {
+        from_id: this.current_user.id,
+        to_id: this.selected.id,
+        content: this.content,
+      })
+      this.clear_content()
+    },
+    clear_content: function() {
+      this.content = ""
+    }
+  }
 }
 </script>
 
@@ -41,8 +70,8 @@ export default {
     border: 0;
     outline: 0;
     width: 100%;
-    height: 80px;
+    height: 75px;
     resize: none;
-    padding: 0 10px 5px;
+    padding: 0 10px;
   }
 </style>
