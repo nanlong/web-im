@@ -28,6 +28,9 @@ const store = new Vuex.Store({
         left: {
           data: [],
           selected: null,
+        },
+        right: {
+          data: []
         }
       }
     },
@@ -75,6 +78,12 @@ const store = new Vuex.Store({
     },
     set_main_dialog_left_selected (state, item) {
       state.main.dialog.left.selected = item
+    },
+    set_main_dialog_right_data (state, data) {
+      state.main.dialog.right.data = data
+    },
+    push_main_dialog_right_data (state, item) {
+      state.main.dialog.right.data.push(item)
     }
   }
 })

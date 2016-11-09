@@ -37,12 +37,12 @@ defmodule Zheye.DialogChannel do
     {:noreply, socket}
   end
 
-  def handle_in("get_notes", _, socket) do
+  def handle_in("get_dialog_history", _, socket) do
     [_, user_info] = socket.topic |> String.split(":")
     [user_info, _] = user_info |> String.split("@")
     [user_1, user_2] = user_info |> String.split("&")
 
-    list = WebChatDialog
+    dialog_list = WebChatDialog
       |> where([d], d.domain == ^socket.assigns.domain)
       |> where([d], (d.from_id == ^user_1 and d.to_id == ^user_2) or (d.from_id == ^user_2 and d.to_id == ^user_1))
       |> order_by([desc: :inserted_at])
@@ -50,17 +50,25 @@ defmodule Zheye.DialogChannel do
       |> Repo.all
       |> Enum.reverse
 
-    list_data = Enum.map(list, fn item ->
+    dialog_list_data = Enum.map(dialog_list, fn dialog ->
+      user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
+
       %{
-        id: item.id,
-        from_id: item.from_id,
-        to_id: item.to_id,
-        content: item.content,
-        inserted_at: item.inserted_at
+        id: dialog.id,
+        from_id: dialog.from_id,
+        to_id: dialog.to_id,
+        content: dialog.content,
+        inserted_at: dialog.inserted_at,
+        user: %{
+          id: user.origin_id,
+          name: user.name,
+          avatar: user.avatar,
+          bio: user.bio,
+        }
       }
     end)
 
-    push socket, "get_notes", %{data: list_data}
+    push socket, "get_dialog_history", %{data: dialog_list_data}
 
     {:noreply, socket}
   end
