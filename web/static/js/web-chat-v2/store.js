@@ -17,7 +17,9 @@ const store = new Vuex.Store({
     },
     main: {
       is_show: true,
+      current_tab: "friend",
       friends: [],
+      friend_selected: null,
       friend_selected_id: null,
     },
     mini: {
@@ -45,8 +47,12 @@ const store = new Vuex.Store({
     set_main_friends (state, friends) {
       state.main.friends = friends
     },
-    set_main_friend_selected_id (state, user_id) {
-      state.main.friend_selected_id = user_id
+    set_main_friend_selected (state, user) {
+      state.main.friend_selected = user
+      state.main.friend_selected_id = user.id
+    },
+    set_main_current_tab (state, name) {
+      state.main.current_tab = name
     }
   }
 })

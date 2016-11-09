@@ -1,19 +1,17 @@
 <template lang="html">
   <div class="zheye-app-main" v-show="is_show">
     <MainHeader></MainHeader>
-    <MainLeft></MainLeft>
-    <MainRight></MainRight>
+    <MainContainer></MainContainer>
   </div>
 </template>
 
 <script>
 import MainHeader from "./main/Header.vue"
-import MainLeft from "./main/Left.vue"
-import MainRight from "./main/Right.vue"
+import MainContainer from "./main/Container.vue"
 
 export default {
   name: "AppMain",
-  components: {MainHeader, MainLeft, MainRight},
+  components: {MainHeader, MainContainer},
   computed: {
     is_show () {
       return this.$store.state.main.is_show

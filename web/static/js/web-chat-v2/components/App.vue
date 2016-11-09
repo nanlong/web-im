@@ -66,4 +66,11 @@ export default {
     left: 0;
     z-index: 1000000;
   }
+  #zheye-app ul, #zheye-app li {
+    margin: 0;
+    padding: 0;
+  }
+  #zheye-app ul, #zheye-app li {
+    list-style: none;
+  }
 </style>

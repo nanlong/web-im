@@ -1,5 +1,8 @@
 <template lang="html">
-  <div class="zheye-app-main-friend" :class="{selected: selected_id == user.id}" @click="selected">
+  <div class="zheye-app-main-friend"
+    :class="{selected: selected_id == user.id}"
+    @click="selected"
+    @dblclick="open_dialog">
     <article class="zheye-app-main-friend-avatar">
       <img :src="user.avatar" :alt="user.name" :title="user.name" />
     </article>
@@ -16,7 +19,7 @@
 
 <script>
 export default {
-  name: "MainFirend",
+  name: "Firend",
   props: ["user"],
   computed: {
     selected_id () {
@@ -25,8 +28,11 @@ export default {
   },
   methods: {
     selected: function() {
-      this.$store.commit("set_main_friend_selected_id", this.user.id)
+      this.$store.commit("set_main_friend_selected", this.user)
     },
+    open_dialog: function() {
+      this.$store.commit("set_main_current_tab", "dialog")
+    }
   }
 }
 </script>
@@ -37,7 +43,7 @@ export default {
     height: 70px;
   }
   .zheye-app-main-friend.selected {
-    background: rgb(240, 240, 240);
+    background: rgb(239, 241, 245);
   }
   .zheye-app-main-friend-avatar {
     float: left;

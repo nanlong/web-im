@@ -12,12 +12,18 @@
         <input type="text" name="q" value="">
       </span>
     </div>
+
+    <MainHeaderTabs><MainHeaderTabs>
+
   </div>
 </template>
 
 <script>
+import MainHeaderTabs from "./header/Tabs.vue"
+
 export default {
   name: "MainHeader",
+  components: {MainHeaderTabs},
   computed: {
     current_user () {
       return this.$store.state.current_user
@@ -41,6 +47,11 @@ export default {
     background-color: rgba(240, 240, 240, 0.8);
     border-radius: 5px 5px 0 0;
   }
+  .zheye-app-main-controller {
+    float: left;
+    position: relative;
+    z-index: 1;
+  }
   .zheye-app-main-current-user-avatar img {
     width: 25px;
     height: 25px;
@@ -49,6 +60,8 @@ export default {
   .zheye-app-main-current-user {
     float: right;
     padding: 15px;
+    position: relative;
+    z-index: 1;
   }
   .zheye-app-main-controller {
     padding: 15px;
@@ -77,5 +90,19 @@ export default {
     border: none;
     outline: none;
     padding: 0 10px;
+  }
+  .zheye-app-main-tabs {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    text-align: center;
+    z-index: 0;
+  }
+  .zheye-app-main-tabs span {
+    cursor: pointer;
+    display: inline-block;
+    margin: 15px 10px 0;
   }
 </style>

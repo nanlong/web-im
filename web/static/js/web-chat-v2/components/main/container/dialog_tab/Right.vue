@@ -5,15 +5,17 @@
 </template>
 
 <script>
+
 export default {
-  name: "MainRight"
+  name: "MainDialogTabRight",
+  components: {},
 }
 </script>
 
 <style lang="css" scoped>
   .zheye-app-main-right {
     position: absolute;
-    top: 55px;
+    top: 0;
     left: 200px;
     right: 0;
     bottom: 0;
