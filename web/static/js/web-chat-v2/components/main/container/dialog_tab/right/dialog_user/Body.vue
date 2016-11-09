@@ -1,5 +1,8 @@
 <template lang="html">
   <div class="zheye-app-dialog-user-body" id="zheye-app-dialog-container">
+    <div class="zheye-app-dialog-msg">
+      <span @click="open_dialog_history">更多数据进入聊天记录查看<span>
+    </div>
     <div class="zheye-app-dialog-item"
       v-for="item in data"
       :class="{self: item.user.id == current_user.id}">
@@ -65,6 +68,9 @@ export default {
         let chat = document.getElementById('zheye-app-dialog-container')
         chat.scrollTop = chat.scrollHeight
       }, 100)
+    },
+    open_dialog_history: function() {
+      alert("等待实现")
     }
   }
 }
@@ -79,6 +85,18 @@ export default {
     bottom: 120px;
     overflow-y: auto;
   }
+  .zheye-app-dialog-msg {
+    text-align: center;
+  }
+  .zheye-app-dialog-msg span {
+    display: inline-block;
+    background: rgb(248, 248, 248);
+    padding: 3px 10px;
+    border-radius: 3px;
+    color: #999;
+    cursor: pointer;
+    font-size: 12px;
+  }
   .zheye-app-dialog-item {
     padding: 10px;
   }
@@ -91,7 +109,7 @@ export default {
     border-radius: 100%;
   }
   .zheye-app-dialog-item-container {
-    margin-left: 50px;
+    margin: 0 50px;
   }
   .zheye-app-dialog-item-content {
     display: inline-block;
@@ -117,9 +135,6 @@ export default {
   .zheye-app-dialog-item.self .zheye-app-dialog-item-avatar {
     float: right;
   }
-  .zheye-app-dialog-item.self .zheye-app-dialog-item-container {
-    margin-right: 50px;
-  }
   .zheye-app-dialog-item.self .zheye-app-dialog-item-username {
     float: right;
     margin: 0 0 0 5px;
@@ -127,5 +142,6 @@ export default {
   .zheye-app-dialog-item.self .zheye-app-dialog-item-content {
     background: #33DF83;
     color: #fff;
+    text-align: left;
   }
 </style>
