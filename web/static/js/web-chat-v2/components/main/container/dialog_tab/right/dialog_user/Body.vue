@@ -1,21 +1,21 @@
 <template lang="html">
-  <div class="zheye-app-main-dialog">
+  <div class="zheye-app-dialog-user-body">
 
   </div>
 </template>
 
 <script>
 export default {
-  name: "MainDialog"
+  name: "DialogUserBody"
 }
 </script>
 
 <style lang="css" scoped>
-  .zheye-app-main-dialog {
+  .zheye-app-dialog-user-body {
     position: absolute;
-    top: 0;
+    top: 45px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 120px;
   }
 </style>

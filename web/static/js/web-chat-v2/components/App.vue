@@ -36,7 +36,7 @@ export default {
 
     self_channel.on("load_friends", resp => {
       Tool.console_log("加载好友列表")
-      this.$store.commit("set_main_friends", resp.data)
+      this.$store.commit("set_main_friend_left_data", resp.data)
     })
 
     self_channel.on("notification:dialog", resp => {

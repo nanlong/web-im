@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="zheye-app-main" v-show="is_show">
+  <div class="zheye-app-main" v-show="!is_mini">
     <MainHeader></MainHeader>
     <MainContainer></MainContainer>
   </div>
@@ -13,8 +13,8 @@ export default {
   name: "AppMain",
   components: {MainHeader, MainContainer},
   computed: {
-    is_show () {
-      return this.$store.state.main.is_show
+    is_mini () {
+      return this.$store.state.is_mini
     }
   }
 }

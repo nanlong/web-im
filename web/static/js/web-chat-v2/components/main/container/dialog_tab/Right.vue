@@ -1,14 +1,15 @@
 <template lang="html">
   <div class="zheye-app-main-right">
-
+    <DialogUser></DialogUser>
   </div>
 </template>
 
 <script>
+import DialogUser from "./right/DialogUser.vue"
 
 export default {
   name: "MainDialogTabRight",
-  components: {},
+  components: {DialogUser},
 }
 </script>
 

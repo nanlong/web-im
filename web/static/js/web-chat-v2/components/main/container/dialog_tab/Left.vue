@@ -1,13 +1,15 @@
 <template lang="html">
   <div class="zheye-app-main-left">
-
+    <HistoryList></HistoryList>
   </div>
 </template>
 
 <script>
+import HistoryList from "./left/HistoryList.vue"
+
 export default {
   name: "MainDialogTabLeft",
-  components: {},
+  components: {HistoryList},
 }
 </script>
 

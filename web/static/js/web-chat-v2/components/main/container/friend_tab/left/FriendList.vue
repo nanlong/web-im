@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="">
-    <Friend v-for="user in friends" :key="user.id" :user="user"></Friend>
+    <Friend v-for="user in data" :key="user.id" :user="user"></Friend>
   </div>
 </template>
 
@@ -11,8 +11,8 @@ export default {
   name: "FriendList",
   components: {Friend,},
   computed: {
-    friends () {
-      return this.$store.state.main.friends
+    data () {
+      return this.$store.state.main.friend.left.data
     }
   }
 }

@@ -33,7 +33,7 @@ export default {
   name: "FriendShow",
   computed: {
     friend () {
-      return this.$store.state.main.friend_selected
+      return this.$store.state.main.friend.left.selected
     }
   },
   methods: {
