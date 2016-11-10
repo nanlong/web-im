@@ -10,7 +10,7 @@ const store = new Vuex.Store({
     socket: socket,
     domain: Tool.get_domain(),
     current_user: zheye.config.webchat,
-    is_mini: false,
+    is_mini: true,
     channel: {
       room: null,
       self: null,

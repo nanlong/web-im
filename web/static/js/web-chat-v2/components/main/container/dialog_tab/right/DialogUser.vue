@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="">
+  <div v-show="selected">
     <DialogUserHeader></DialogUserHeader>
     <DialogUserBody></DialogUserBody>
     <DialogUserFooter></DialogUserFooter>

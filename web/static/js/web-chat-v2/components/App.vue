@@ -1,16 +1,18 @@
 <template lang="html">
   <div id="zheye-app">
     <AppMain></AppMain>
+    <AppMini></AppMini>
   </div>
 </template>
 
 <script>
 import AppMain from "./Main.vue"
+import AppMini from "./Mini.vue"
 import Tool from "../tool"
 
 export default {
   name: "App",
-  components: {AppMain,},
+  components: {AppMain, AppMini},
   computed: {
     socket () {
       return this.$store.state.socket
