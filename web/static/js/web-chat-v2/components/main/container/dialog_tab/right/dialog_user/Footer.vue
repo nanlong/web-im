@@ -7,9 +7,8 @@
       <span>聊天记录</span>
     </div>
     <div class="zheye-app-dialog-user-footer-textarea">
-      <textarea name="content" v-model="content" @keyup.13="send"></textarea>
+      <textarea name="content" v-model="content" @keyup.enter="send"></textarea>
     </div>
-
   </div>
 </template>
 
