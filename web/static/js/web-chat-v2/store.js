@@ -79,12 +79,18 @@ const store = new Vuex.Store({
     set_main_dialog_left_selected (state, item) {
       state.main.dialog.left.selected = item
     },
+    remove_main_dialog_left_data (state, item) {
+      let index = state.main.dialog.left.data.find((_item) => _item.id == item.id)
+      state.main.dialog.left.data.splice(index, 1)
+      state.main.dialog.left.selected = null
+    },
     set_main_dialog_right_data (state, data) {
       state.main.dialog.right.data = data
     },
     push_main_dialog_right_data (state, item) {
       state.main.dialog.right.data.push(item)
-    }
+    },
+
   }
 })
 

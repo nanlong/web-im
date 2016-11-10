@@ -1,18 +1,28 @@
 <template lang="html">
   <div class="zheye-app-main-history"
     :class="{selected: selected && selected.id == history.id}"
-    @click="selected_item">
-    <article class="zheye-app-main-history-avatar">
-      <img :src="history.avatar" :alt="history.name" :title="history.name" />
-    </article>
-    <div class="zheye-app-main-history-info">
-      <div class="zheye-app-main-history-name">
-        {{ history.name }}
-      </div>
-      <div class="zheye-app-main-history-bio">
-        {{ history.bio }}
+    @mouseenter="show_remove_btn = true"
+    @mouseleave="show_remove_btn = false">
+
+    <div class="zheye-app-main-history-content" @click="selected_item">
+      <article class="zheye-app-main-history-avatar">
+        <img :src="history.avatar" :alt="history.name" :title="history.name" />
+      </article>
+      <div class="zheye-app-main-history-info">
+        <div class="zheye-app-main-history-name">
+          {{ history.name }}
+        </div>
+        <div class="zheye-app-main-history-bio">
+          {{ history.bio }}
+        </div>
       </div>
     </div>
+
+    <span class="zheye-app-main-history-remove"
+      v-show="show_remove_btn"
+      @click="remove">
+      x
+    </span>
   </div>
 </template>
 
@@ -20,6 +30,11 @@
 export default {
   name: "HistoryItem",
   props: ["history"],
+  data: () => {
+    return {
+      show_remove_btn: false
+    }
+  },
   computed: {
     selected () {
       return this.$store.state.main.dialog.left.selected
@@ -28,14 +43,20 @@ export default {
   methods: {
     selected_item: function() {
       this.$store.commit("set_main_dialog_left_selected", this.history)
-    }
+    },
+    remove: function() {
+      this.$store.commit("remove_main_dialog_left_data", this.history)
+    },
   }
 }
 </script>
 
 <style lang="css" scoped>
   .zheye-app-main-history {
-    padding: 15px;
+    position: relative;
+  }
+  .zheye-app-main-history-content {
+    padding: 15px 20px;
     height: 70px;
   }
   .zheye-app-main-history.selected {
@@ -61,5 +82,12 @@ export default {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .zheye-app-main-history-remove {
+    position: absolute;
+    left: 7px;
+    top: 25px;
+    cursor: pointer;
+    color: #999;
   }
 </style>

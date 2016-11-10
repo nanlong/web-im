@@ -39,7 +39,7 @@ export default {
 
 <style lang="css" scoped>
   .zheye-app-main-friend {
-    padding: 15px;
+    padding: 15px 20px;
     height: 70px;
   }
   .zheye-app-main-friend.selected {

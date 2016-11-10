@@ -31,6 +31,11 @@ export default {
   },
   watch: {
     selected: function(new_selected, old_selected) {
+      console.log(new_selected, old_selected)
+      if (!new_selected) {
+        return
+      }
+
       if (old_selected && old_selected.id == new_selected.id) {
         return
       }
