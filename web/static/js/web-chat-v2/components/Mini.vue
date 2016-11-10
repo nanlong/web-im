@@ -26,8 +26,8 @@ export default {
     left: 10px;
     bottom: 10px;
     border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 40px;
+    padding: 5px 20px;
+    border-radius: 30px;
     cursor: pointer;
     box-shadow: 0 3px 3px #999;
   }
