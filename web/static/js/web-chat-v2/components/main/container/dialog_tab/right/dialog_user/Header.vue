@@ -11,7 +11,7 @@ export default {
   name: "DialogUserHeader",
   computed: {
     selected () {
-      return this.$store.state.main.dialog.left.selected
+      return this.$store.state.main.dialog.left.current
     }
   }
 }

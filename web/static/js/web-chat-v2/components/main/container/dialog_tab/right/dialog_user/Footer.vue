@@ -7,7 +7,7 @@
       <span>聊天记录</span>
     </div>
     <div class="zheye-app-dialog-user-footer-textarea">
-      <textarea name="content" v-model="content" @keyup.enter="send"></textarea>
+      <textarea name="content" v-model="content" @keyup.enter="send" @click="read" @keyup="read"></textarea>
     </div>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
       return this.$store.state.current_user
     },
     selected () {
-      return this.$store.state.main.dialog.left.selected
+      return this.$store.state.main.dialog.left.current
     }
   },
   methods: {
@@ -42,6 +42,9 @@ export default {
     },
     clear_content: function() {
       this.content = ""
+    },
+    read: function() {
+      this.$store.commit("reset_notification_dialog_statistics", this.selected.id)
     }
   }
 }

@@ -17,7 +17,7 @@ export default {
   components: {DialogUserHeader, DialogUserBody, DialogUserFooter},
   computed: {
     selected () {
-      return this.$store.state.main.dialog.left.selected
+      return this.$store.state.main.dialog.left.current
     },
     socket () {
       return this.$store.state.socket

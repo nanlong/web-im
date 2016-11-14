@@ -34,6 +34,7 @@ defmodule Zheye.DialogChannel do
 
     self_topic = "self:" <> dialog.to_id <> "@" <> socket.assigns.domain
     socket.endpoint.broadcast self_topic, "notification:dialog", dialog_data
+    
     {:noreply, socket}
   end
 

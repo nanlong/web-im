@@ -34,7 +34,7 @@ export default {
       return this.$store.state.current_user
     },
     selected () {
-      return this.$store.state.main.dialog.left.selected
+      return this.$store.state.main.dialog.left.current
     },
     data () {
       return this.$store.state.main.dialog.right.data

@@ -43,6 +43,7 @@ export default {
 
     self_channel.on("notification:dialog", resp => {
       Tool.console_log("有新消息")
+      this.$store.commit("push_notification_dialog", resp)
     })
 
     self_channel.on("notification:firend", resp => {

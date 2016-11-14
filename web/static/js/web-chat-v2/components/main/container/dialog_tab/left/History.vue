@@ -16,6 +16,9 @@
           {{ history.bio }}
         </div>
       </div>
+      <div class="zheye-app-main-history-right" v-if="noread > 0">
+        <span class="zheye-badge">{{ noread }}</span>
+      </div>
     </div>
 
     <span class="zheye-app-main-history-remove"
@@ -32,14 +35,21 @@ export default {
   props: ["history"],
   data: () => {
     return {
-      show_remove_btn: false
+      show_remove_btn: false,
     }
   },
   computed: {
     selected () {
-      return this.$store.state.main.dialog.left.selected
+      return this.$store.state.main.dialog.left.current
+    },
+    noread () {
+      if (this.selected && this.history.id == this.selected.id) {
+        this.$store.commit("reset_notification_dialog_statistics", this.history.id)
+      }
+      return this.$store.state.main.notification.dialog.noread(this.history.id)
     },
   },
+
   methods: {
     selected_item: function() {
       this.$store.commit("set_main_dialog_left_selected", this.history)
@@ -89,5 +99,16 @@ export default {
     top: 25px;
     cursor: pointer;
     color: #999;
+  }
+  .zheye-badge {
+    position: absolute;
+    background: #f00;
+    border-radius: 100%;
+    min-width: 16px;
+    text-align: center;
+    color: #fff;
+    top: 25px;
+    right: 10px;
+    font-size: 12px;
   }
 </style>

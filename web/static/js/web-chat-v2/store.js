@@ -2,6 +2,8 @@ import Vue from "vue"
 import Vuex from "vuex"
 import socket from "./socket"
 import Tool from "./tool"
+import List from "./struct/list"
+import NotificationDialog from "./struct/notification_dialog"
 
 Vue.use(Vuex)
 
@@ -10,7 +12,7 @@ const store = new Vuex.Store({
     socket: socket,
     domain: Tool.get_domain(),
     current_user: zheye.config.webchat,
-    is_mini: true,
+    is_mini: false,
     channel: {
       room: null,
       self: null,
@@ -25,13 +27,15 @@ const store = new Vuex.Store({
         }
       },
       dialog: {
-        left: {
-          data: [],
-          selected: null,
-        },
+        left: new List(new Set()),
         right: {
           data: []
         }
+      },
+      notification: {
+        dialog: new NotificationDialog(),
+        firend: [],
+        system: [],
       }
     },
   },
@@ -39,8 +43,12 @@ const store = new Vuex.Store({
     close_main (state) {
       state.is_mini = true
     },
-    open_main (state) {
+    open_main (state, tab) {
       state.is_mini = false
+
+      if (tab) {
+        state.main.current_tab = tab
+      }
     },
     set_channel_room (state, channel) {
       state.channel.room = channel
@@ -61,28 +69,19 @@ const store = new Vuex.Store({
       state.main.current_tab = name
     },
     open_dialog (state, item) {
-      let has_item = false
       state.main.current_tab = "dialog"
-      state.main.dialog.left.selected = item
-
-      state.main.dialog.left.data.map(function(_item) {
-        if (item.id == _item.id) {
-          has_item = true
-          return
-        }
-      })
-
-      if (!has_item) {
-        state.main.dialog.left.data.splice(0, 0, item)
-      }
+      state.main.dialog.left.add(item)
+      state.main.dialog.left.selected(item)
     },
     set_main_dialog_left_selected (state, item) {
-      state.main.dialog.left.selected = item
+      state.main.dialog.left.selected(item)
+
+      if (item) {
+        state.main.notification.dialog.reset_statistics(item.id)
+      }
     },
     remove_main_dialog_left_data (state, item) {
-      let index = state.main.dialog.left.data.find((_item) => _item.id == item.id)
-      state.main.dialog.left.data.splice(index, 1)
-      state.main.dialog.left.selected = null
+      state.main.dialog.left.delete(item)
     },
     set_main_dialog_right_data (state, data) {
       state.main.dialog.right.data = data
@@ -90,7 +89,19 @@ const store = new Vuex.Store({
     push_main_dialog_right_data (state, item) {
       state.main.dialog.right.data.push(item)
     },
-
+    push_notification_dialog (state, data) {
+      state.main.notification.dialog.add(data)
+      state.main.dialog.left.add(data.user)
+    },
+    reset_notification_dialog (state) {
+      state.main.notification.dialog.reset()
+    },
+    reset_notification_dialog_total (state) {
+      state.main.notification.dialog.reset_total()
+    },
+    reset_notification_dialog_statistics (state, key) {
+      state.main.notification.dialog.reset_statistics(key)
+    }
   }
 })
 
