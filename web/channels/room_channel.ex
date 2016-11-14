@@ -1,7 +1,7 @@
 defmodule Zheye.RoomChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{Presence, WebChatUser, WebChatFriend}
+  alias Zheye.{Presence, WebChatUser, WebChatFriend, WebChatUserView}
 
   def join("room:lobby", _, socket) do
     send(self, :after_join)
@@ -9,15 +9,7 @@ defmodule Zheye.RoomChannel do
   end
 
   def handle_in("current_user", _, socket) do
-    user = socket.assigns.user
-
-    push socket, "current_user", %{
-      id: user.origin_id,
-      name: user.name,
-      avatar: user.avatar,
-      bio: user.bio,
-      domain: socket.assigns.domain
-    }
+    push socket, "current_user", Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
 
     {:noreply, socket}
   end

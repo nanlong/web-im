@@ -1,7 +1,8 @@
 defmodule Zheye.SelfChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{Presence, WebChatUser, WebChatFriendRequest, WebChatFriend, WebChatDialogNotification}
+  alias Zheye.{Presence, WebChatUser, WebChatFriendRequest, WebChatFriend,
+    WebChatDialogNotification, WebChatUserView, WebChatDialogNotificationView}
 
   import Zheye.Ecto.Helpers
 
@@ -11,53 +12,35 @@ defmodule Zheye.SelfChannel do
   end
 
   def handle_info(:after_join, socket) do
-    firends = WebChatFriend
+    friends = WebChatFriend
     |> where([f], f.domain == ^socket.assigns.domain)
     |> where([f], f.left_user_id == ^socket.assigns.user.origin_id or f.right_user_id == ^socket.assigns.user.origin_id)
     |> Repo.all
 
-    firends_id = (for item <- firends, do: [item.left_user_id, item.right_user_id])
+    friends_id = (for item <- friends, do: [item.left_user_id, item.right_user_id])
     |> Enum.concat
     |> Enum.uniq
     |> Enum.filter(fn (x) -> x != socket.assigns.user.origin_id end)
 
-    firends_user = WebChatUser
+    friends_user = WebChatUser
     |> where([u], u.origin_domain == ^socket.assigns.domain)
-    |> where([u], u.origin_id in ^firends_id)
+    |> where([u], u.origin_id in ^friends_id)
     |> Repo.all
 
-    firends_user_data = Enum.map(firends_user, fn user ->
-      %{
-        id: user.origin_id,
-        name: user.name,
-        avatar: user.avatar,
-        bio: user.bio
-      }
-    end)
+    friends_user_data = Phoenix.View.render(WebChatUserView, "entries.json", entries: friends_user)
 
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
       status: "online"
     })
 
-    push socket, "load_friends", %{data: firends_user_data}
+    push socket, "load_friends", friends_user_data
 
     notifications_dialog = WebChatDialogNotification
     |> where([n], n.domain == ^socket.assigns.domain)
     |> where([n], n.to_user_id == ^socket.assigns.user.origin_id)
     |> Repo.all
-    |> Enum.map(fn n ->
-      user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: n.from_user_id)
-      %{
-        user: %{
-          id: user.origin_id,
-          name: user.name,
-          avatar: user.avatar,
-          bio: user.bio
-        }
-      }
-    end)
 
-    push socket, "load_notifications:dialog", %{data: notifications_dialog}
+    push socket, "load_notifications:dialog", Phoenix.View.render(WebChatDialogNotificationView, "entries.json", entries: notifications_dialog)
 
     {:noreply, socket}
   end
@@ -80,17 +63,11 @@ defmodule Zheye.SelfChannel do
 
     {:ok, request} = WebChatFriendRequest.create(params)
 
-    user = socket.assigns.user
     topic = "self:" <> Map.get(payload, "id") <> "@" <> socket.assigns.domain
 
     data = Map.merge(%{
         id: request.id,
-        user: %{
-          id: user.origin_id,
-          name: user.name,
-          avatar: user.avatar,
-          bio: user.bio,
-        }
+        user: Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
       }, params)
 
     socket.endpoint.broadcast topic, "notification:friend", data

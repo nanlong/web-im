@@ -1,7 +1,8 @@
 defmodule Zheye.DialogChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{Presence, WebChatUser, WebChatDialog, WebChatDialogNotification}
+  alias Zheye.{Presence, WebChatUser, WebChatDialog, WebChatDialogNotification,
+    WebChatDialogView, WebChatUserView}
 
   def join("dialog:" <> _user_info, _, socket) do
     {:ok, socket}
@@ -14,27 +15,13 @@ defmodule Zheye.DialogChannel do
     |> WebChatDialog.changeset(payload)
     |> Repo.insert
 
-    user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
-    to_user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.to_id)
-
-    dialog_data = %{
-      id: dialog.id,
-      from_id: dialog.from_id,
-      to_id: dialog.to_id,
-      content: dialog.content,
-      inserted_at: dialog.inserted_at,
-      user: %{
-        id: user.origin_id,
-        name: user.name,
-        avatar: user.avatar,
-        bio: user.bio,
-      }
-    }
+    dialog_data = Phoenix.View.render(WebChatDialogView, "entry.json", entry: dialog)
 
     broadcast socket, "shout", dialog_data
 
     self_topic = "self:" <> dialog.to_id <> "@" <> socket.assigns.domain
 
+    to_user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.to_id)
     case Presence.list(self_topic) |> Map.fetch(to_user.id) do
       {:ok, _} ->
         socket.endpoint.broadcast! self_topic, "notification:dialog", dialog_data
@@ -64,25 +51,7 @@ defmodule Zheye.DialogChannel do
       |> Repo.all
       |> Enum.reverse
 
-    dialog_list_data = Enum.map(dialog_list, fn dialog ->
-      user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
-
-      %{
-        id: dialog.id,
-        from_id: dialog.from_id,
-        to_id: dialog.to_id,
-        content: dialog.content,
-        inserted_at: dialog.inserted_at,
-        user: %{
-          id: user.origin_id,
-          name: user.name,
-          avatar: user.avatar,
-          bio: user.bio,
-        }
-      }
-    end)
-
-    push socket, "get_dialog_history", %{data: dialog_list_data}
+    push socket, "get_dialog_history", Phoenix.View.render(WebChatDialogView, "entries.json", entries: dialog_list)
 
     {:noreply, socket}
   end
