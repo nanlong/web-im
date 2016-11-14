@@ -1,21 +1,21 @@
 <template lang="html">
   <div class="zheye-app-friend-show">
-    <div v-if="friend">
+    <div v-if="selected">
       <article class="zheye-app-friend-show-avatar">
-        <img :src="friend.avatar" alt="" />
+        <img :src="selected.avatar" :alt="selected.name" :title="selected.name" />
       </article>
       <div class="zheye-app-friend-show-info">
         <ul>
           <li>
             <span>昵称：</span>
-            <div class="">
-              {{ friend.name }}
+            <div class="zheye-app-friend-name">
+              {{ selected.name }}
             </div>
           </li>
           <li>
             <span>签名：</span>
-            <div class="">
-              {{ friend.bio }}
+            <div class="zheye-app-friend-bio">
+              {{ selected.bio }}
             </div>
           </li>
         </ul>
@@ -32,13 +32,13 @@
 export default {
   name: "FriendShow",
   computed: {
-    friend () {
+    selected () {
       return this.$store.state.main.friend.left.selected
     }
   },
   methods: {
     open_dialog: function() {
-      this.$store.commit("set_main_current_tab", "dialog")
+      this.$store.commit("open_dialog", this.selected)
     }
   }
 }
