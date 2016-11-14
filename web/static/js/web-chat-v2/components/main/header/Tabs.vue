@@ -20,16 +20,22 @@ export default {
       return this.$store.state.main.current_tab
     },
     notification_total () {
-      if (this.current_tab.name == "dialog") {
-        this.$store.commit("reset_notification_dialog_total")
-      }
       return this.$store.state.main.notification.dialog.total
+    },
+    channel () {
+      return this.$store.state.channel.self
     }
   },
   watch: {
-    current_tab: function(new_value, _) {
-      if (new_value == "dialog") {
+    current_tab: function(tab, _) {
+      if (tab == "dialog") {
         this.$store.commit("reset_notification_dialog_total");
+        this.channel.push("read_notifications:dialog")
+      }
+    },
+    notification_total: function(total, _) {
+      if (this.current_tab == "dialog") {
+        this.$store.commit("reset_notification_dialog_total")
       }
     }
   },

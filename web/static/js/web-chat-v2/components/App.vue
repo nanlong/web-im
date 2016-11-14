@@ -41,6 +41,10 @@ export default {
       this.$store.commit("set_main_friend_left_data", resp.data)
     })
 
+    self_channel.on("load_notifications:dialog", resp => {
+      this.$store.commit("set_notification_dialog", resp.data)
+    })
+
     self_channel.on("notification:dialog", resp => {
       Tool.console_log("有新消息")
       this.$store.commit("push_notification_dialog", resp)

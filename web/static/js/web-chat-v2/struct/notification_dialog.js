@@ -6,7 +6,7 @@ class NotificationDialog {
     this.statistics_set = new Set()
     this.statistics = {}
   }
-
+  
   add (notification) {
     this.total += 1
     this.increment_statistics(notification.user.id)

@@ -12,7 +12,7 @@ const store = new Vuex.Store({
     socket: socket,
     domain: Tool.get_domain(),
     current_user: zheye.config.webchat,
-    is_mini: false,
+    is_mini: true,
     channel: {
       room: null,
       self: null,
@@ -88,6 +88,12 @@ const store = new Vuex.Store({
     },
     push_main_dialog_right_data (state, item) {
       state.main.dialog.right.data.push(item)
+    },
+    set_notification_dialog (state, data) {
+      data.map(function(item) {
+        state.main.notification.dialog.add(item)
+        state.main.dialog.left.add(item.user)
+      })
     },
     push_notification_dialog (state, data) {
       state.main.notification.dialog.add(data)

@@ -1,7 +1,7 @@
 defmodule Zheye.SelfChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{WebChatUser, WebChatFriendRequest, WebChatFriend}
+  alias Zheye.{Presence, WebChatUser, WebChatFriendRequest, WebChatFriend, WebChatDialogNotification}
 
   import Zheye.Ecto.Helpers
 
@@ -35,7 +35,38 @@ defmodule Zheye.SelfChannel do
       }
     end)
 
+    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
+      status: "online"
+    })
+
     push socket, "load_friends", %{data: firends_user_data}
+
+    notifications_dialog = WebChatDialogNotification
+    |> where([n], n.domain == ^socket.assigns.domain)
+    |> where([n], n.to_user_id == ^socket.assigns.user.origin_id)
+    |> Repo.all
+    |> Enum.map(fn n ->
+      user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: n.from_user_id)
+      %{
+        user: %{
+          id: user.origin_id,
+          name: user.name,
+          avatar: user.avatar,
+          bio: user.bio
+        }
+      }
+    end)
+
+    push socket, "load_notifications:dialog", %{data: notifications_dialog}
+
+    {:noreply, socket}
+  end
+
+  def handle_in("read_notifications:dialog", _, socket) do
+    WebChatDialogNotification
+    |> where([n], n.domain == ^socket.assigns.domain)
+    |> where([n], n.to_user_id == ^socket.assigns.user.origin_id)
+    |> Repo.delete_all
 
     {:noreply, socket}
   end

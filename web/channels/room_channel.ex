@@ -1,7 +1,7 @@
 defmodule Zheye.RoomChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{WebChatUser, WebChatFriend, Presence}
+  alias Zheye.{Presence, WebChatUser, WebChatFriend}
 
   def join("room:lobby", _, socket) do
     send(self, :after_join)

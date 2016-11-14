@@ -1,7 +1,7 @@
 defmodule Zheye.DialogChannel do
   use Zheye.Web, :channel
 
-  alias Zheye.{WebChatUser, WebChatDialog}
+  alias Zheye.{Presence, WebChatUser, WebChatDialog, WebChatDialogNotification}
 
   def join("dialog:" <> _user_info, _, socket) do
     {:ok, socket}
@@ -15,6 +15,7 @@ defmodule Zheye.DialogChannel do
     |> Repo.insert
 
     user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.from_id)
+    to_user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: dialog.to_id)
 
     dialog_data = %{
       id: dialog.id,
@@ -33,8 +34,20 @@ defmodule Zheye.DialogChannel do
     broadcast socket, "shout", dialog_data
 
     self_topic = "self:" <> dialog.to_id <> "@" <> socket.assigns.domain
-    socket.endpoint.broadcast self_topic, "notification:dialog", dialog_data
-    
+
+    case Presence.list(self_topic) |> Map.fetch(to_user.id) do
+      {:ok, _} ->
+        socket.endpoint.broadcast! self_topic, "notification:dialog", dialog_data
+
+      :error ->
+        %WebChatDialogNotification{
+          domain: socket.assigns.domain,
+          from_user_id: dialog.from_id,
+          to_user_id: dialog.to_id,
+        }
+        |> Repo.insert
+    end
+
     {:noreply, socket}
   end
 
