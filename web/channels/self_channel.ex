@@ -2,7 +2,8 @@ defmodule Zheye.SelfChannel do
   use Zheye.Web, :channel
 
   alias Zheye.{Presence, WebChatUser, WebChatFriendRequest, WebChatFriend,
-    WebChatDialogNotification, WebChatUserView, WebChatDialogNotificationView}
+    WebChatDialogNotification, WebChatUserView, WebChatDialogNotificationView,
+    WebChatFriendRequestView}
 
   import Zheye.Ecto.Helpers
 
@@ -80,19 +81,16 @@ defmodule Zheye.SelfChannel do
 
     topic = "self:" <> user_id <> "@" <> socket.assigns.domain
 
-    data = %{
-      id: request.id,
-      user: Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
-    }
+    data = Phoenix.View.render(WebChatFriendRequestView, "entry.json", entry: request)
 
     socket.endpoint.broadcast topic, "notification:friend", data
 
     {:noreply, socket}
   end
 
-  def handle_in("add_friend:confirmed", payload, socket) do
+  def handle_in("add_friend:confirmed", %{"id" => id}, socket) do
     request = WebChatFriendRequest
-    |> Repo.get(Map.get(payload, "id"))
+    |> Repo.get_by(id: id, domain: socket.assigns.domain, to_user_id: socket.assigns.user.origin_id)
     |> update_field(:is_confirmed, true)
 
     [left_user_id, right_user_id] = [request.from_user_id, request.to_user_id] |> Enum.sort
@@ -103,9 +101,29 @@ defmodule Zheye.SelfChannel do
       right_user_id: right_user_id
     }
 
-    %WebChatFriend{}
+    {:ok, friend} = %WebChatFriend{}
     |> WebChatFriend.changeset(params)
     |> Repo.insert
+
+    from_topic = "self:" <> request.from_user_id <> "@" <> socket.assigns.domain
+    socket.endpoint.broadcast from_topic, "new_friend", Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
+
+    new_friend = WebChatUser |> Repo.get_by(origin_domain: request.domain, origin_id: request.from_user_id)
+    push socket, "new_friend", Phoenix.View.render(WebChatUserView, "entry.json", entry: new_friend)
+
+    {:noreply, socket}
+  end
+
+  def handle_in("get_notification_friend", payload, socket) do
+    entries = WebChatFriendRequest
+    |> where([r], r.domain == ^socket.assigns.domain)
+    |> where([r], r.to_user_id == ^socket.assigns.user.origin_id)
+    |> order_by([desc: :inserted_at])
+    |> Repo.all
+
+    data = Phoenix.View.render(WebChatFriendRequestView, "entries.json", entries: entries)
+
+    push socket, "get_notification_friend", data
 
     {:noreply, socket}
   end

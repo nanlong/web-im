@@ -1,5 +1,5 @@
 <template lang="html">
-  <div v-show="selected">
+  <div v-show="selected && selected.id != 'notification:friend'">
     <DialogUserHeader></DialogUserHeader>
     <DialogUserBody></DialogUserBody>
     <DialogUserFooter></DialogUserFooter>
@@ -32,6 +32,10 @@ export default {
   watch: {
     selected: function(new_selected, old_selected) {
       if (!new_selected) {
+        return
+      }
+
+      if (new_selected.id == "notification:friend") {
         return
       }
 

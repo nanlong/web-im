@@ -25,7 +25,19 @@ export default {
     }
   },
   watch: {
-    selected: function(user, _) {
+    selected: function(user, old_user) {
+      if (!user) {
+        return
+      }
+
+      if (user.id == "notification:friend") {
+        return
+      }
+
+      if (old_user && old_user.id == user.id) {
+        return
+      }
+
       this.channel.push("is_friend", user)
 
       this.channel.on("is_friend", resp => {

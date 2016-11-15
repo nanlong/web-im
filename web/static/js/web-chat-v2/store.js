@@ -62,6 +62,9 @@ const store = new Vuex.Store({
     set_main_friend_left_data (state, data) {
       state.main.friend.left.data = data
     },
+    push_main_friend_left_data (state, data) {
+      state.main.firend.left.data.splice(0, 0, data)
+    },
     set_main_friend_left_selected (state, item) {
       state.main.friend.left.selected = item
     },
@@ -89,6 +92,17 @@ const store = new Vuex.Store({
     push_main_dialog_right_data (state, item) {
       state.main.dialog.right.data.push(item)
     },
+
+    reset_notification_dialog (state) {
+      state.main.notification.dialog.reset()
+    },
+    reset_notification_dialog_total (state) {
+      state.main.notification.dialog.reset_total()
+    },
+    reset_notification_dialog_statistics (state, key) {
+      state.main.notification.dialog.reset_statistics(key)
+    },
+
     set_notification_dialog (state, data) {
       data.map(function(item) {
         state.main.notification.dialog.add(item)
@@ -99,15 +113,6 @@ const store = new Vuex.Store({
       state.main.notification.dialog.add(data)
       state.main.dialog.left.add(data.user)
     },
-    reset_notification_dialog (state) {
-      state.main.notification.dialog.reset()
-    },
-    reset_notification_dialog_total (state) {
-      state.main.notification.dialog.reset_total()
-    },
-    reset_notification_dialog_statistics (state, key) {
-      state.main.notification.dialog.reset_statistics(key)
-    }
   }
 })
 

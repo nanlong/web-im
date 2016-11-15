@@ -1,15 +1,17 @@
 <template lang="html">
   <div class="zheye-app-main-right">
     <DialogUser></DialogUser>
+    <NotificationFriend></NotificationFriend>
   </div>
 </template>
 
 <script>
 import DialogUser from "./right/DialogUser.vue"
+import NotificationFriend from "./right/NotificationFriend.vue"
 
 export default {
   name: "MainDialogTabRight",
-  components: {DialogUser},
+  components: {DialogUser, NotificationFriend},
 }
 </script>
 
