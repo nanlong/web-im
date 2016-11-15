@@ -37,7 +37,6 @@ export default {
   created: function() {
     this.channel.on("get_notification_friend", resp => {
       this.data = resp.data
-      console.log(resp.data)
     })
   },
   watch: {
@@ -49,6 +48,7 @@ export default {
   },
   methods: {
     add_friend_confirmed: function(request) {
+      request.is_confirmed = true
       this.channel.push("add_friend:confirmed", request)
     }
   }

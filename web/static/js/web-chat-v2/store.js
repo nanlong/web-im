@@ -63,7 +63,7 @@ const store = new Vuex.Store({
       state.main.friend.left.data = data
     },
     push_main_friend_left_data (state, data) {
-      state.main.firend.left.data.splice(0, 0, data)
+      state.main.friend.left.data.splice(0, 0, data)
     },
     set_main_friend_left_selected (state, item) {
       state.main.friend.left.selected = item
@@ -72,6 +72,7 @@ const store = new Vuex.Store({
       state.main.current_tab = name
     },
     open_dialog (state, item) {
+      state.is_mini = false
       state.main.current_tab = "dialog"
       state.main.dialog.left.add(item)
       state.main.dialog.left.selected(item)

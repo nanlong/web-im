@@ -4,7 +4,7 @@
       {{ selected.name }}
     </span>
 
-    <span class="zheye-button-add-friend" v-if="is_friend" @click="add_friend">+ 加为好友</span>
+    <span class="zheye-button-add-friend" v-if="! is_friend" @click="add_friend">+ 加为好友</span>
   </div>
 </template>
 
@@ -49,6 +49,7 @@ export default {
     add_friend: function() {
       this.channel.push("add_friend", this.selected)
       alert("好友请求已发送，请等待对方确认")
+      this.is_friend = true
     }
   }
 }
