@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="zheye-app-dialog-user-footer">
     <div class="zheye-app-dialog-user-footer-tools">
-      <span>表情</span>
-      <span>图片</span>
-      <span>文件</span>
-      <span>聊天记录</span>
+      <span @click="developing('表情发送功能')">表情</span>
+      <span @click="developing("图片上传功能")">图片</span>
+      <span @click="developing("文件上传功能")">文件</span>
+      <span @click="developing("查看聊天记录功能")">聊天记录</span>
     </div>
     <div class="zheye-app-dialog-user-footer-textarea">
       <textarea name="content" v-model="content" @keyup.enter="send" @click="read" @keyup="read"></textarea>
@@ -45,6 +45,9 @@ export default {
     },
     read: function() {
       this.$store.commit("reset_notification_dialog_statistics", this.selected.id)
+    },
+    developing: function(what) {
+      alert(what + " 开发中...")
     }
   }
 }

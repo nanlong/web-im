@@ -43,14 +43,7 @@ defmodule Zheye.RoomChannel do
 
     {:ok, user}  = WebChatUser.get(user_params)
 
-    user_data = %{
-      id: user.origin_id,
-      name: user.name,
-      avatar: user.avatar,
-      bio: user.bio,
-      is_online: Map.get(user_params, "is_online"),
-      is_firend: WebChatFriend.is_firend?(socket.assigns.domain, socket.assigns.user, user)
-    }
+    user_data = Phoenix.View.render(WebChatUserView, "entry", entry: user, current_user: socket.assigns.user)
 
     push socket, "load_user", %{data: user_data}
     {:noreply, socket}

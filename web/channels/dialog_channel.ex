@@ -2,7 +2,7 @@ defmodule Zheye.DialogChannel do
   use Zheye.Web, :channel
 
   alias Zheye.{Presence, WebChatUser, WebChatDialog, WebChatDialogNotification,
-    WebChatDialogView, WebChatUserView}
+    WebChatFriend, WebChatFriendRequest, WebChatDialogView, WebChatUserView}
 
   def join("dialog:" <> _user_info, _, socket) do
     {:ok, socket}

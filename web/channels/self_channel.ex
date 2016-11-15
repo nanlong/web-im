@@ -54,21 +54,36 @@ defmodule Zheye.SelfChannel do
     {:noreply, socket}
   end
 
-  def handle_in("add_friend", payload, socket) do
+  def handle_in("is_friend", %{"id" => user_id}, socket) do
+    user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: user_id)
+
+    data = %{
+      id: user_id,
+      is_friend: WebChatFriend.is_friend?(socket.assigns.domain, socket.assigns.user, user)
+    }
+
+    push socket, "is_friend", data
+
+    {:noreply, socket}
+  end
+
+  def handle_in("add_friend", %{"id" => user_id}, socket) do
+    user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: user_id)
+
     params = %{
       domain: socket.assigns.domain,
       from_user_id: socket.assigns.user.origin_id,
-      to_user_id: Map.get(payload, "id")
+      to_user_id: user_id
     }
 
     {:ok, request} = WebChatFriendRequest.create(params)
 
-    topic = "self:" <> Map.get(payload, "id") <> "@" <> socket.assigns.domain
+    topic = "self:" <> user_id <> "@" <> socket.assigns.domain
 
-    data = Map.merge(%{
-        id: request.id,
-        user: Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
-      }, params)
+    data = %{
+      id: request.id,
+      user: Phoenix.View.render(WebChatUserView, "entry.json", entry: socket.assigns.user)
+    }
 
     socket.endpoint.broadcast topic, "notification:friend", data
 

@@ -20,7 +20,7 @@ defmodule Zheye.WebChatFriend do
     |> validate_required([:domain, :left_user_id, :right_user_id])
   end
 
-  def is_firend?(domain, user_one, user_two) do
+  def is_friend?(domain, user_one, user_two) do
     [left_user_id, right_user_id] = [user_one.origin_id, user_two.origin_id] |> Enum.sort
     case Repo.get_by(__MODULE__, domain: domain, left_user_id: left_user_id, right_user_id: right_user_id) do
       nil -> false
