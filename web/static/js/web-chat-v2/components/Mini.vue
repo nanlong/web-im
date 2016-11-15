@@ -41,6 +41,7 @@ export default {
     border-radius: 30px;
     cursor: pointer;
     box-shadow: 0 3px 3px #999;
+    background: #fff;
   }
   .zheye-badge {
     position: absolute;

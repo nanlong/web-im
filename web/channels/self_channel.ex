@@ -69,8 +69,6 @@ defmodule Zheye.SelfChannel do
   end
 
   def handle_in("add_friend", %{"id" => user_id}, socket) do
-    user = WebChatUser |> Repo.get_by(origin_domain: socket.assigns.domain, origin_id: user_id)
-
     params = %{
       domain: socket.assigns.domain,
       from_user_id: socket.assigns.user.origin_id,
@@ -101,7 +99,7 @@ defmodule Zheye.SelfChannel do
       right_user_id: right_user_id
     }
 
-    {:ok, friend} = %WebChatFriend{}
+    %WebChatFriend{}
     |> WebChatFriend.changeset(params)
     |> Repo.insert
 
@@ -114,7 +112,7 @@ defmodule Zheye.SelfChannel do
     {:noreply, socket}
   end
 
-  def handle_in("get_notification_friend", payload, socket) do
+  def handle_in("get_notification_friend", _, socket) do
     entries = WebChatFriendRequest
     |> where([r], r.domain == ^socket.assigns.domain)
     |> where([r], r.to_user_id == ^socket.assigns.user.origin_id)

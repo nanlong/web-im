@@ -44,7 +44,7 @@ export default {
     top: 0;
     left: 0;
     right: 0;
-    background-color: rgba(240, 240, 240, 0.8);
+    background-color: rgba(240, 240, 240, 0.95);
     border-radius: 5px 5px 0 0;
   }
   .zheye-app-main-controller {

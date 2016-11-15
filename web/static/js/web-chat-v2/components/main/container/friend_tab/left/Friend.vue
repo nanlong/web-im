@@ -58,6 +58,9 @@ export default {
   }
   .zheye-app-main-friend-name {
     padding-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .zheye-app-main-friend-bio {
     font-size: 12px;

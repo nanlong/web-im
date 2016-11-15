@@ -85,6 +85,9 @@ export default {
   }
   .zheye-app-main-history-name {
     padding-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .zheye-app-main-history-bio {
     font-size: 12px;
